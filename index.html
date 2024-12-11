@@ -10,15 +10,30 @@
       text-align: center;
       padding: 20px;
       background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
     }
 
     .container {
       max-width: 400px;
-      margin: 0 auto;
       padding: 20px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-box {
+      max-width: 200px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
     }
 
     h1 {
@@ -119,6 +134,11 @@
       <ul id="times-list"></ul>
     </div>
   </div>
+  <div class="control-box">
+    <button id="edit">Edit</button>
+    <button id="increment">+</button>
+    <button id="decrement">-</button>
+  </div>
   <script>
     let startTime = null;
     let elapsedTime = parseInt(localStorage.getItem('elapsedTime')) || 0;
@@ -132,6 +152,9 @@
     const saveButton = document.getElementById('save');
     const clearAllButton = document.getElementById('clear-all');
     const timesList = document.getElementById('times-list');
+    const editButton = document.getElementById('edit');
+    const incrementButton = document.getElementById('increment');
+    const decrementButton = document.getElementById('decrement');
 
     function formatTime(time) {
       return (time / 1000).toFixed(2);
@@ -224,6 +247,23 @@
     resetButton.addEventListener('click', resetStopwatch);
     saveButton.addEventListener('click', saveTime);
     clearAllButton.addEventListener('click', clearAllSavedTimes);
+
+    // Additional buttons functionality
+    editButton.addEventListener('click', () => {
+      alert('Edit functionality is not yet implemented.');
+    });
+
+    incrementButton.addEventListener('click', () => {
+      elapsedTime += 1000; // Add 1 second
+      updateDisplay();
+    });
+
+    decrementButton.addEventListener('click', () => {
+        if (elapsedTime >= 1000) { // Ensure time doesn't go negative
+        elapsedTime -= 1000; // Subtract 1 second
+        updateDisplay();
+      }
+    });
   </script>
 </body>
 </html>
