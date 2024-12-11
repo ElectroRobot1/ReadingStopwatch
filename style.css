@@ -1,30 +1,27 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding: 0;
+    padding: 20px;
+    background-color: #f7f7f7;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
+    align-items: flex-start;
+    gap: 20px;
   }
   
-  .container {
-    background: #ffffff;
+  .container, .control-box {
+    max-width: 400px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  
-  #display {
-    font-size: 3rem;
-    margin: 20px 0;
+  .control-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
   
   button {
@@ -38,49 +35,34 @@ body {
     cursor: pointer;
   }
   
-  button:disabled {
-    background-color: #cccccc;
-  }
-  
   button:hover:not(:disabled) {
     background-color: #0056b3;
   }
-  #clear-all {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff4d4d;
-    color: white;
-    cursor: pointer;
+  
+  button.active {
+    background-color: #333;
   }
   
-  #clear-all:disabled {
-    background-color: #cccccc;
+  .hidden {
+    display: none;
   }
   
-  #clear-all:hover:not(:disabled) {
-    background-color: #cc0000;
-  }
-  
-  #times-list li {
+  #time-input-box {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .input-row {
+    display: flex;
     align-items: center;
+    gap: 10px;
   }
   
-  .delete-button {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .delete-button:hover {
-    background-color: #cc0000;
+  input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    font-size: 1rem;
   }
   

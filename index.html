@@ -4,121 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stopwatch</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background-color: #f7f7f7;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 20px;
-    }
-
-    .container {
-      max-width: 400px;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .control-box {
-      max-width: 200px;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    #display {
-      font-size: 2rem;
-      margin: 20px 0;
-    }
-
-    button {
-      font-size: 1rem;
-      margin: 5px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
-
-    button:hover:not(:disabled) {
-      background-color: #0056b3;
-    }
-
-    #saved-times {
-      margin-top: 20px;
-    }
-
-    #times-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    #times-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f0f0f0;
-      margin: 5px 0;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 1rem;
-      text-align: left;
-    }
-
-    .delete-button {
-      background-color: #ff4d4d;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .delete-button:hover {
-      background-color: #cc0000;
-    }
-
-    #clear-all {
-      font-size: 1rem;
-      margin-bottom: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #ff4d4d;
-      color: white;
-      cursor: pointer;
-    }
-
-    #clear-all:disabled {
-      background-color: #cccccc;
-    }
-
-    #clear-all:hover:not(:disabled) {
-      background-color: #cc0000;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -138,132 +24,22 @@
     <button id="edit">Edit</button>
     <button id="increment">+</button>
     <button id="decrement">-</button>
+    <div id="time-input-box" class="hidden">
+      <div class="input-row">
+        <input type="number" id="hours-input" placeholder="0">
+        <label>Hours</label>
+      </div>
+      <div class="input-row">
+        <input type="number" id="minutes-input" placeholder="0">
+        <label>Minutes</label>
+      </div>
+      <div class="input-row">
+        <input type="number" id="seconds-input" placeholder="0">
+        <label>Seconds</label>
+      </div>
+      <button id="enter-time">Enter</button>
+    </div>
   </div>
-  <script>
-    let startTime = null;
-    let elapsedTime = parseInt(localStorage.getItem('elapsedTime')) || 0;
-    let savedTimes = JSON.parse(localStorage.getItem('savedTimes')) || [];
-    let timerInterval = null;
-
-    const display = document.getElementById('display');
-    const startButton = document.getElementById('start');
-    const stopButton = document.getElementById('stop');
-    const resetButton = document.getElementById('reset');
-    const saveButton = document.getElementById('save');
-    const clearAllButton = document.getElementById('clear-all');
-    const timesList = document.getElementById('times-list');
-    const editButton = document.getElementById('edit');
-    const incrementButton = document.getElementById('increment');
-    const decrementButton = document.getElementById('decrement');
-
-    function formatTime(time) {
-      return (time / 1000).toFixed(2);
-    }
-
-    function updateDisplay() {
-      display.textContent = formatTime(elapsedTime);
-    }
-
-    function startStopwatch() {
-      startTime = Date.now() - elapsedTime;
-      timerInterval = setInterval(() => {
-        elapsedTime = Date.now() - startTime;
-        updateDisplay();
-      }, 10);
-      startButton.disabled = true;
-      stopButton.disabled = false;
-      resetButton.disabled = false;
-      saveButton.disabled = false;
-    }
-
-    function stopStopwatch() {
-      clearInterval(timerInterval);
-      localStorage.setItem('elapsedTime', elapsedTime); // Save elapsed time
-      startButton.disabled = false;
-      stopButton.disabled = true;
-    }
-
-    function resetStopwatch() {
-      clearInterval(timerInterval);
-      elapsedTime = 0;
-      localStorage.setItem('elapsedTime', elapsedTime); // Reset elapsed time
-      updateDisplay();
-      startButton.disabled = false;
-      stopButton.disabled = true;
-      resetButton.disabled = true;
-      saveButton.disabled = true;
-    }
-
-    function saveTime() {
-      const timeString = formatTime(elapsedTime);
-      savedTimes.push(timeString);
-      localStorage.setItem('savedTimes', JSON.stringify(savedTimes)); // Save saved times
-      updateSavedTimesList();
-    }
-
-    function clearAllSavedTimes() {
-      savedTimes = [];
-      localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
-      updateSavedTimesList();
-    }
-
-    function deleteSavedTime(index) {
-      savedTimes.splice(index, 1);
-      localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
-      updateSavedTimesList();
-    }
-
-    function updateSavedTimesList() {
-      timesList.innerHTML = '';
-      savedTimes.forEach((time, index) => {
-        const listItem = document.createElement('li');
-
-        // Add time text
-        const timeText = document.createElement('span');
-        timeText.textContent = `${index + 1}. ${time} seconds`;
-        listItem.appendChild(timeText);
-
-        // Add delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.className = 'delete-button';
-        deleteButton.addEventListener('click', () => deleteSavedTime(index));
-        listItem.appendChild(deleteButton);
-
-        timesList.appendChild(listItem);
-      });
-
-      // Enable or disable the "Clear All" button based on saved times
-      clearAllButton.disabled = savedTimes.length === 0;
-    }
-
-    // Initialize the display and saved times on page load
-    updateDisplay();
-    updateSavedTimesList();
-
-    // Attach event listeners
-    startButton.addEventListener('click', startStopwatch);
-    stopButton.addEventListener('click', stopStopwatch);
-    resetButton.addEventListener('click', resetStopwatch);
-    saveButton.addEventListener('click', saveTime);
-    clearAllButton.addEventListener('click', clearAllSavedTimes);
-
-    // Additional buttons functionality
-    editButton.addEventListener('click', () => {
-      alert('Edit functionality is not yet implemented.');
-    });
-
-    incrementButton.addEventListener('click', () => {
-      elapsedTime += 1000; // Add 1 second
-      updateDisplay();
-    });
-
-    decrementButton.addEventListener('click', () => {
-        if (elapsedTime >= 1000) { // Ensure time doesn't go negative
-        elapsedTime -= 1000; // Subtract 1 second
-        updateDisplay();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
