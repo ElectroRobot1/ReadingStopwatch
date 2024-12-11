@@ -23,7 +23,7 @@ function formatTime(time) {
   const seconds = Math.floor((time / 1000) % 60);
   const minutes = Math.floor((time / (1000 * 60)) % 60);
   const hours = Math.floor(time / (1000 * 60 * 60));
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 function updateDisplay() {
@@ -86,6 +86,23 @@ function applyTimeChange(mode) {
   timeInputBox.classList.add('hidden');
 }
 
+function saveTime() {
+  const timeString = formatTime(elapsedTime);
+  savedTimes.push(timeString);
+  localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
+  updateSavedTimesList();
+}
+
+function updateSavedTimesList() {
+  timesList.innerHTML = '';
+  savedTimes.forEach((time, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${index + 1}. ${time}`;
+    timesList.appendChild(listItem);
+  });
+  clearAllButton.disabled = savedTimes.length === 0;
+}
+
 editButton.addEventListener('click', () => toggleTimeInputBox(editButton));
 incrementButton.addEventListener('click', () => toggleTimeInputBox(incrementButton));
 decrementButton.addEventListener('click', () => toggleTimeInputBox(decrementButton));
@@ -102,3 +119,7 @@ enterTimeButton.addEventListener('click', () => {
 startButton.addEventListener('click', startStopwatch);
 stopButton.addEventListener('click', stopStopwatch);
 resetButton.addEventListener('click', resetStopwatch);
+saveButton.addEventListener('click', saveTime);
+
+updateDisplay();
+updateSavedTimesList();
