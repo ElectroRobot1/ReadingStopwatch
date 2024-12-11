@@ -93,13 +93,37 @@ function saveTime() {
   updateSavedTimesList();
 }
 
+function clearAllSavedTimes() {
+  savedTimes = [];
+  localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
+  updateSavedTimesList();
+}
+
+function deleteSavedTime(index) {
+  savedTimes.splice(index, 1);
+  localStorage.setItem('savedTimes', JSON.stringify(savedTimes));
+  updateSavedTimesList();
+}
+
 function updateSavedTimesList() {
   timesList.innerHTML = '';
   savedTimes.forEach((time, index) => {
     const listItem = document.createElement('li');
-    listItem.textContent = `${index + 1}. ${time}`;
+    listItem.className = 'saved-time-item';
+
+    const timeText = document.createElement('span');
+    timeText.textContent = `${index + 1}. ${time}`;
+    listItem.appendChild(timeText);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.className = 'delete-button';
+    deleteButton.addEventListener('click', () => deleteSavedTime(index));
+    listItem.appendChild(deleteButton);
+
     timesList.appendChild(listItem);
   });
+
   clearAllButton.disabled = savedTimes.length === 0;
 }
 
@@ -120,6 +144,7 @@ startButton.addEventListener('click', startStopwatch);
 stopButton.addEventListener('click', stopStopwatch);
 resetButton.addEventListener('click', resetStopwatch);
 saveButton.addEventListener('click', saveTime);
+clearAllButton.addEventListener('click', clearAllSavedTimes);
 
 updateDisplay();
 updateSavedTimesList();
