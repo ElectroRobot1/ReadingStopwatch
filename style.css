@@ -1,0 +1,146 @@
+:root {
+  --bg: #f7f7f7;
+  --panel-bg: #ffffff;
+  --text: #111111;
+  --button-bg: #007bff;
+  --button-text: #ffffff;
+  --border: #333333;
+  --modal-bg: rgba(0,0,0,0.6);
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] {
+  --bg: #0b0b0d;
+  --panel-bg: #121214;
+  --text: #e8e8e8;
+  --button-bg: #0a84ff;
+  --button-text: #ffffff;
+  --border: #444444;
+  --modal-bg: rgba(255,255,255,0.06);
+  --shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .container, .control-box {
+    max-width: 400px;
+    padding: 20px;
+    background: var(--panel-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  #display {
+    font-size: 4rem;
+    margin: 20px 0;
+  }
+  
+  button {
+    font-size: 1rem;
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+  }
+  
+  button:hover:not(:disabled) {
+    opacity: 0.95;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  
+  button.active {
+    background-color: #333;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #time-input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    font-size: 1rem;
+  }
+
+  #save-page-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: var(--modal-bg);
+    z-index: 2000;
+  }
+
+  .save-page-visible {
+    display: flex !important;
+    pointer-events: auto;
+  }
+
+  .save-page-content {
+    background: var(--panel-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    width: 320px;
+    text-align: center;
+    border: 2px solid var(--border);
+    font-size: 1.05rem;
+  }
+
+  .page-suggest-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  #page-decrement, #page-increment {
+    padding: 6px 10px;
+    font-size: 1rem;
+  }
+
+  .save-page-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
