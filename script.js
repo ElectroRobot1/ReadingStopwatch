@@ -259,26 +259,42 @@ function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
     if (themeToggle) {
-      themeToggle.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      // themeToggle is a checkbox input; checked = dark
+      try { themeToggle.checked = theme === 'dark'; } catch (e) {}
     }
   } catch (e) { console.log('applyTheme error', e); }
 }
 
 function initTheme() {
   const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (stored) {
     applyTheme(stored);
-    return;
+  } else {
+    // Use OS theme as default
+    applyTheme(prefersDark ? 'dark' : 'light');
   }
-  const hour = new Date().getHours();
-  const theme = (hour >= 18 || hour < 8) ? 'dark' : 'light';
-  applyTheme(theme);
+
+  // Listen for OS theme changes, but only apply them if the user hasn't set an explicit preference
+  if (window.matchMedia) {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    };
+    if (mql.addEventListener) mql.addEventListener('change', handler);
+    else if (mql.addListener) mql.addListener(handler);
+  }
 }
 
 if (themeToggle) {
-  themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    applyTheme(current);
+  // The theme toggle is now a checkbox input (slider). Checked = dark theme.
+  themeToggle.addEventListener('change', () => {
+    const newTheme = themeToggle.checked ? 'dark' : 'light';
+    // Store explicit choice and apply
+    try { localStorage.setItem('theme', newTheme); } catch (e) {}
+    applyTheme(newTheme);
   });
 }
 

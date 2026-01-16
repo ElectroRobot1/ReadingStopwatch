@@ -38,7 +38,13 @@
     <button id="edit">Edit</button>
     <button id="increment">+</button>
     <button id="decrement">-</button>
-    <button id="theme-toggle">Toggle Theme</button>
+    <!-- Theme slider control -->
+    <div class="theme-control">
+      <label class="switch" title="Toggle light/dark">
+        <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="slider"></span>
+      </label>
+    </div>
     <div id="time-input-box" class="hidden">
       <div class="input-row">
         <input type="number" id="hours-input" placeholder="0">
@@ -52,7 +58,9 @@
         <input type="number" id="seconds-input" placeholder="0">
         <label>Seconds</label>
       </div>
-      <button id="enter-time">Enter</button>
+      <div>
+        <button id="enter-time">Enter</button>
+      </div>
     </div>
   </div>
   <script src="script.js"></script>
